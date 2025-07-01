@@ -1,13 +1,13 @@
+CCFLAG = -Wall -Wextra -std=c11 -g
+FILES = src/main.c src/tabela.c include/tabela.h
+
 all: tabela
 
-tabela: main.o tabela.o
-	gcc -Wall -Wextra -std=c11 main.o tabela.o -o tabela
-
-main.o: main.c
-	gcc -c main.c
-
-tabela.o: tabela.c
-	gcc -c tabela.c
+tabela: $(FILES)
+	gcc $(CCFLAG) -Iinclude src/main.c src/tabela.c -o tabela
 
 run: tabela
 	./tabela
+
+clean:
+	rm -f tabela
