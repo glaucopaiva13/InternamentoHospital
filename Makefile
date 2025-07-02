@@ -1,13 +1,17 @@
+CC = gcc
 CCFLAG = -Wall -Wextra -std=c11 -g
-FILES = src/main.c src/tabela.c include/tabela.h
+INCLUDE = -Iinclude
+FILESCC = src/main.c src/tabela.c src/filaEspera.c
+FILESH = include/tabela.h include/filaEspera.h
+TARGET = tabela
 
-all: tabela
+all: $(TARGET)
 
-tabela: $(FILES)
-	gcc $(CCFLAG) -Iinclude src/main.c src/tabela.c -o tabela
+$(TARGET): $(FILESCC) $(FILESH)
+	$(CC) $(CCFLAG) $(INCLUDE) $(FILESCC) -o $(TARGET)
 
-run: tabela
-	./tabela
+run: $(TARGET)
+	./$(TARGET)
 
 clean:
-	rm -f tabela
+	rm -f $(TARGET)
