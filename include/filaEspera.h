@@ -23,7 +23,7 @@ int remove_final(Deque *d);
 int pega_inicio(Deque *d);
 int pega_final(Deque *d);
 void imprime(Deque *d);
-void sortear_e_inserir(tabela_hash *th, Deque *fila);
+void sortearPaciente(tabela_hash *th, Deque *fila);
 
 
 
