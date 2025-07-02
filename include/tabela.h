@@ -24,5 +24,6 @@ int funcao_hash(char *chave);
 void inserir(tabela_hash *th, char *id, char *nome, int idade, char sexo, char *cpf, int prioridade, int atendido);
 void ler_csv(tabela_hash *th);
 void imprimir_tabela(tabela_hash *th);
+No* buscar_paciente(tabela_hash *th, char *id);
 
 #endif

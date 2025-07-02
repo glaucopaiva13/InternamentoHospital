@@ -13,7 +13,7 @@ int eh_digito(char c) {
     return c >= '0' && c <= '9';
 }
 
-int hash(char *chave) {
+int funcao_hash(char *chave) {
     while (*chave && !eh_digito(*chave)) {
         chave++;
     }
@@ -22,7 +22,7 @@ int hash(char *chave) {
 }
 
 void inserir(tabela_hash *th, char *id, char *nome, int idade, char sexo, char *cpf, int prioridade, int atendido) {
-    int indice = hash(id);
+    int indice = funcao_hash(id);
     No *novo = malloc(sizeof(No));
 
     strcpy(novo->id, id);
@@ -82,4 +82,18 @@ void imprimir_tabela(tabela_hash *th) {
             atual = atual->proximo;
         }
     }
+}
+
+No* buscar_paciente(tabela_hash *th, char *id) {
+    int indice = funcao_hash(id);
+    No *atual = th->tabela[indice];
+    
+    while (atual != NULL) {
+        if (strcmp(atual->id, id) == 0) {
+            return atual;  // Paciente encontrado
+        }
+        atual = atual->proximo;
+    }
+    
+    return NULL;  // Paciente não encontrado
 }
