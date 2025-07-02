@@ -99,7 +99,7 @@ int remove_final(Deque *d)
 {
   if (esta_vazio(d))
   {
-    printf("FIla vazia!\n");
+    printf("Fila vazia!\n");
     return -1;
   }
 
@@ -164,16 +164,21 @@ void sortearPaciente(tabela_hash *th, Deque *fila) {
     for (int i = 0; i < TAMANHO; i++) {
         No *atual = th->tabela[i];
         while (atual != NULL) {
-            pacientes[total++] = atual;
+            if (atual->atendido == 0) { // Só adiciona não atendidos
+                pacientes[total++] = atual;
+            }
             atual = atual->proximo;
         }
     }
     if (total == 0) return;
     int sorteado = rand() % total;
-    No *p = pacientes[sorteado];
-    if (p->prioridade >= 4) {
-        insere_inicio(fila, atoi(p->id));
+    No *paciente = pacientes[sorteado];
+    paciente->atendido = 1;
+
+    printf("Paciente sorteado: %s, Prioridade: %d\n", paciente->id, paciente->prioridade);
+    if (paciente->prioridade >= 4) {
+        insere_inicio(fila, atoi(paciente->id));
     } else {
-        insere_final(fila, atoi(p->id));
+        insere_final(fila, atoi(paciente->id));
     }
 }
