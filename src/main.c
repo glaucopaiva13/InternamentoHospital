@@ -15,25 +15,45 @@ int main()
     Deque fila;
     inicializar_tabela(&th);
     ler_csv(&th);
-    // Inicializa fila de espera em deque
     inicia_deque(&fila);
 
     printf("====PACIENTES NA TABELA HASH====\n");
     imprimir_tabela(&th);
 
-    printf("Sorteando pacientes iniciais:\n");
-    if (esta_vazio(&fila) == true) {
-        for (int i = 0; i < 10; i++)
-        {
-            sortearPaciente(&th, &fila);
-        }
-    } else {
-        if(esta_cheio(&fila) == true) {
-            printf("Fila cheia!\n");
-        } else {
-            printf("Fila não está cheia!\n");
-        }
-    }
+    printf("\n====PREENCHENDO FILA INICIAL====\n");
 
-    return 0;
-}
+    preencherFila(&th, &fila);
+
+    // utilize a função dequeParaLista para remover pacientes da fila e adicionar na lista de leitos
+
+    // colocar aqui a função de preenchimento dos leitos, pra preencher os leitos iniciais
+
+    printf("\n====INICIANDO ATENDIMENTO CONTÍNUO====\n");
+
+    int ciclos = 0;
+
+    while (!esta_vazio(&fila))
+    {
+        printf("\n====CICLO %d====\n", ++ciclos);
+        if (esta_cheio(&fila))
+        {
+            printf("Fila cheia, não é possível adicionar mais pacientes.\n");
+            printf("Esperando a liberação de um leito para liberar vaga na fila!\n");
+            continue;
+        }
+        else
+        {
+            preencherFila(&th, &fila);
+        }
+
+        No *paciente = dequeParaLista(&fila);
+        if (paciente == NULL)
+        {
+            printf("Nenhum paciente disponível para atendimento.\n");
+            printf("Encerrando a execução...\n");
+            break;
+            // Código para ter a alta aleatória do leito
+        }
+
+        return 0;
+    }

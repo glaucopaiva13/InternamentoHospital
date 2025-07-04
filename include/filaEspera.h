@@ -3,11 +3,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "tabela.h"
 
 #define MAX 20
 
 typedef struct{
-  int vetor[MAX];
+  No* vetor[MAX];
   int inicio;
   int final;
   int tamanho;
@@ -16,15 +17,15 @@ typedef struct{
 void inicia_deque(Deque *d);
 int esta_cheio(Deque *d);
 int esta_vazio(Deque *d);
-void insere_inicio(Deque *d, int valor);
-void insere_final(Deque *d, int valor);
-int remove_inicio(Deque *d);
-int remove_final(Deque *d);
-int pega_inicio(Deque *d);
-int pega_final(Deque *d);
+void insere_inicio(Deque *d, No* paciente);
+void insere_final(Deque *d, No* paciente);
+No* remove_inicio(Deque *d);
+No* remove_final(Deque *d);
+No* pega_inicio(Deque *d);
+No* pega_final(Deque *d);
 void imprime(Deque *d);
-void sortearPaciente(tabela_hash *th, Deque *fila);
-
-
+No* sortearPaciente(tabela_hash *th, Deque *fila);
+No* dequeParaLista(Deque *fila);
+preencherFila(tabela_hash *th, Deque *fila);
 
 #endif
