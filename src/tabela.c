@@ -32,6 +32,7 @@ void inserir(tabela_hash *th, char *id, char *nome, int idade, char sexo, char *
     strcpy(novo->cpf, cpf);
     novo->prioridade = prioridade;
     novo->atendido = atendido;
+    novo->em_fila = 0;
     novo->proximo = th->tabela[indice];
     th->tabela[indice] = novo;
 }

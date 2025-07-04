@@ -11,6 +11,7 @@ typedef struct No{
     char cpf[12];
     int prioridade;
     int atendido;
+    int em_fila;
     struct No *proximo;
 } No;
 
