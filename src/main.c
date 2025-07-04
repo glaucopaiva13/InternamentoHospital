@@ -5,6 +5,8 @@
 #include <time.h>
 #include "../include/tabela.h"
 #include "../include/filaEspera.h"
+#include "../include/pilha.h"
+#include "../include/leitos.h"
 
 int main()
 {
@@ -13,9 +15,13 @@ int main()
     // Inicializa a tabela hash e carrega dados
     tabela_hash th;
     Deque fila;
+    Lista leitos;
+    Pilha pilha;
     inicializar_tabela(&th);
     ler_csv(&th);
     inicia_deque(&fila);
+    inicializar_lista(&leitos);
+    inicializar_pilha(&pilha);
 
     printf("====PACIENTES NA TABELA HASH====\n");
     imprimir_tabela(&th);
@@ -57,3 +63,4 @@ int main()
 
         return 0;
     }
+}
