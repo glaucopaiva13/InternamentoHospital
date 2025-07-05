@@ -235,8 +235,8 @@ void preencherFila(tabela_hash *th, Deque *fila)
     if (paciente != NULL)
     {
       printf("NOVO PACIENTE CHEGOU!\n");
-      printf("ID: %s", paciente->id);
-      printf("Nome: %s", paciente->nome);
+      printf("ID: %s\n", paciente->id);
+      printf("Nome: %s\n", paciente->nome);
       printf("Idade: %d\n", paciente->idade);
       printf("Sexo: %c\n", paciente->sexo);
       printf("CPF: %s\n", paciente->cpf);
