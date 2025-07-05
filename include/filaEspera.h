@@ -26,6 +26,6 @@ No* pega_final(Deque *d);
 void imprime(Deque *d);
 No* sortearPaciente(tabela_hash *th, Deque *fila);
 No* dequeParaLista(Deque *fila);
-preencherFila(tabela_hash *th, Deque *fila);
+void preencherFila(tabela_hash *th, Deque *fila);
 
 #endif

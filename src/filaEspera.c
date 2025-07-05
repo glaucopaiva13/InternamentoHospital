@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "../include/tabela.h"
 #include "../include/filaEspera.h"
+#include "../include/pilha.h"
 
 void inicia_deque(Deque *d)
 {
@@ -219,7 +220,7 @@ No *dequeParaLista(Deque *fila)
     pacienteSair = remove_inicio(fila);
   }
 
-  // Marca como atendido e remove da fila
+  // Marca como atendido e remove  da fila
   pacienteSair->atendido = 1;
   pacienteSair->em_fila = 0;
 
@@ -228,14 +229,14 @@ No *dequeParaLista(Deque *fila)
 
 void preencherFila(tabela_hash *th, Deque *fila)
 {
-  while (!esta_cheio(&fila))
+  while (!esta_cheio(fila))
   {
-    No *paciente = sortearPaciente(&th, &fila);
+    No *paciente = sortearPaciente(th, fila);
     if (paciente != NULL)
     {
       printf("NOVO PACIENTE CHEGOU!\n");
-      printf("ID: %s", paciente->id);
-      printf("Nome: %s", paciente->nome);
+      printf("ID: %s\n", paciente->id);
+      printf("Nome: %s\n", paciente->nome);
       printf("Idade: %d\n", paciente->idade);
       printf("Sexo: %c\n", paciente->sexo);
       printf("CPF: %s\n", paciente->cpf);
