@@ -1,5 +1,6 @@
 #include "../include/leitos.h"
 #include "../include/filaEspera.h"
+#include "../include/log.h"
 
 void inicializar_lista(Lista *l){
     l->inicio = NULL;
@@ -18,7 +19,7 @@ int esta_vazio_lista(Lista *l)
 
 void insereNaLista(Lista *l, No *paciente){
     if (esta_cheio_lista(l)) {
-        printf("Leitos ocupados!\n");
+        log_printf("Leitos ocupados!\n");
         return;
     }
 
@@ -39,7 +40,7 @@ void insereNaLista(Lista *l, No *paciente){
 
 No* doLeitoParaPilha(Lista *l){
         if (esta_vazio_lista(l)) {
-        printf("Nenhum leito ocupado\n");
+        log_printf("Nenhum leito ocupado\n");
         return NULL;
     }
 
@@ -65,16 +66,16 @@ No* doLeitoParaPilha(Lista *l){
 }
 
 void imprimir_lista(Lista *l) {
-    printf("Lista de Leitos (%d ocupados):\n", l->tamanho);
+    log_printf("Lista de Leitos (%d ocupados):\n", l->tamanho);
 
     No* atual = l->inicio;
     int i = 1;
     while (atual != NULL) {
-        printf("Leito %d: ID do paciente: %s\n", i++, atual->id);
+        log_printf("Leito %d: ID do paciente: %s\n", i++, atual->id);
         atual = atual->proximo;
     }
 
     if (l->tamanho == 0) {
-        printf("Nenhum leito ocupado.\n");
+        log_printf("Nenhum leito ocupado.\n");
     }
 }

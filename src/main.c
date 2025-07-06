@@ -8,10 +8,21 @@
 #include "../include/filaEspera.h"
 #include "../include/pilha.h"
 #include "../include/leitos.h"
+#include "../include/log.h"
 
 int main()
 {
     srand(time(NULL));
+
+    // Inicializa o sistema de log
+    if (log_iniciar("processamento.log", 0) != 0) {
+        printf("Erro ao inicializar sistema de log!\n");
+        return 1;
+    }
+
+    // Adiciona timestamp inicial
+    time_t agora = time(NULL);
+    log_printf("=== LOG INICIADO EM %s", ctime(&agora));
 
     // Inicializa a tabela hash e carrega dados
     tabela_hash th;
@@ -30,65 +41,65 @@ int main()
     int pacientes_processados = 0;
     time_t inicio_sistema = time(NULL);
 
-    printf("========================================\n");
-    printf("     SISTEMA HOSPITALAR INICIADO\n");
-    printf("========================================\n\n");
+    log_printf("========================================\n");
+    log_printf("     SISTEMA HOSPITALAR INICIADO\n");
+    log_printf("========================================\n\n");
 
-    printf("====PACIENTES NA TABELA HASH====\n");
+    log_printf("====PACIENTES NA TABELA HASH====\n");
     imprimir_tabela(&th);
 
-    printf("\n====PREENCHENDO FILA INICIAL====\n");
+    log_printf("\n====PREENCHENDO FILA INICIAL====\n");
     preencherFila(&th, &fila);
 
-    printf("\n--- Status Inicial do Sistema ---\n");
-    printf("Fila de espera: %d pacientes\n", fila.tamanho);
-    printf("Leitos ocupados: 0 pacientes\n");
-    printf("Altas registradas: 0 pacientes\n");
-    printf("Fluxo: Fila de Espera -> Leitos -> Registro de Altas\n");
+    log_printf("\n--- Status Inicial do Sistema ---\n");
+    log_printf("Fila de espera: %d pacientes\n", fila.tamanho);
+    log_printf("Leitos ocupados: 0 pacientes\n");
+    log_printf("Altas registradas: 0 pacientes\n");
+    log_printf("Fluxo: Fila de Espera -> Leitos -> Registro de Altas\n");
 
-    printf("\n========================================\n");
-    printf("        INICIANDO ATENDIMENTO\n");
-    printf("========================================\n");
+    log_printf("\n========================================\n");
+    log_printf("        INICIANDO ATENDIMENTO\n");
+    log_printf("========================================\n");
 
     int ciclos = 0;
 
     while (!esta_vazio(&fila) || !esta_vazio_lista(&leitos))
     {
-        printf("\n********** CICLO %d **********\n", ++ciclos);
+        log_printf("\n********** CICLO %d **********\n", ++ciclos);
 
-        printf("Status atual: Fila=%d | Leitos=%d | Altas=%d\n", fila.tamanho, leitos.tamanho, pilha.topo + 1);
+        log_printf("Status atual: Fila=%d | Leitos=%d | Altas=%d\n", fila.tamanho, leitos.tamanho, pilha.topo + 1);
 
         // 1. Preencher a fila se não estiver cheia
         if (!esta_vazio(&fila) && !esta_cheio(&fila))
         {
-            printf("\n1. ADMISSAO DE NOVOS PACIENTES:\n");
+            log_printf("\n1. ADMISSAO DE NOVOS PACIENTES:\n");
             int fila_antes = fila.tamanho;
             preencherFila(&th, &fila);
             int novos_pacientes = fila.tamanho - fila_antes;
 
             if (novos_pacientes > 0)
             {
-                printf("-> %d novos pacientes foram admitidos na fila\n", novos_pacientes);
-                printf("-> Estado atual da fila:\n");
+                log_printf("-> %d novos pacientes foram admitidos na fila\n", novos_pacientes);
+                log_printf("-> Estado atual da fila:\n");
                 imprime(&fila);
             }
             else
             {
-                printf("-> Nenhum paciente novo disponivel para admissao\n");
+                log_printf("-> Nenhum paciente novo disponivel para admissao\n");
             }
         }
         else if (esta_cheio(&fila))
         {
-            printf("\n1. FILA CHEIA - Priorizando atendimento dos pacientes atuais\n");
+            log_printf("\n1. FILA CHEIA - Priorizando atendimento dos pacientes atuais\n");
         }
         else if (esta_vazio(&fila))
         {
-            printf("\n1. FILA VAZIA - Sem novos pacientes para admissao\n");
+            log_printf("\n1. FILA VAZIA - Sem novos pacientes para admissao\n");
         }
 
         if (!esta_vazio(&fila))
         {
-            printf("\n2. ATENDIMENTO MEDICO (Fila -> Leitos):\n");
+            log_printf("\n2. ATENDIMENTO MEDICO (Fila -> Leitos):\n");
 
             No *paciente = dequeParaLista(&fila);
             if (paciente != NULL)
@@ -96,28 +107,28 @@ int main()
                 total_atendimentos++;
                 pacientes_processados++;
 
-                printf("-> Paciente chamado para atendimento:\n");
-                printf("   ID: %s", paciente->id);
-                printf("   Nome: %s", paciente->nome);
-                printf("   Prioridade: %d\n", paciente->prioridade);
+                log_printf("-> Paciente chamado para atendimento:\n");
+                log_printf("   ID: %s", paciente->id);
+                log_printf("   Nome: %s", paciente->nome);
+                log_printf("   Prioridade: %d\n", paciente->prioridade);
 
                 insereNaLista(&leitos, paciente);
-                printf("-> Paciente internado com sucesso!\n");
-                printf("-> Total de atendimentos realizados: %d\n", total_atendimentos);
+                log_printf("-> Paciente internado com sucesso!\n");
+                log_printf("-> Total de atendimentos realizados: %d\n", total_atendimentos);
 
-                printf("-> Situacao atual dos leitos:\n");
+                log_printf("-> Situacao atual dos leitos:\n");
                 imprimir_lista(&leitos);
             }
         }
         else
         {
-            printf("\n2. FILA VAZIA - Nenhum paciente aguardando atendimento\n");
+            log_printf("\n2. FILA VAZIA - Nenhum paciente aguardando atendimento\n");
         }
 
         // Aqui faz a alta aleatória dos leitos (pode ou não pode ter)
         if (!esta_vazio_lista(&leitos))
         {
-            printf("\n3. PROCESSO DE ALTA HOSPITALAR (Leitos -> Registro):\n");
+            log_printf("\n3. PROCESSO DE ALTA HOSPITALAR (Leitos -> Registro):\n");
 
             if (rand() % 100 < 70)
             {
@@ -126,52 +137,52 @@ int main()
                 {
                     total_altas++;
 
-                    printf("-> Alta medica concedida:\n");
-                    printf("   ID: %s", paciente_alta->id);
-                    printf("   Nome: %s", paciente_alta->nome);
-                    printf("   Status: Tratamento concluido\n");
+                    log_printf("-> Alta medica concedida:\n");
+                    log_printf("   ID: %s", paciente_alta->id);
+                    log_printf("   Nome: %s", paciente_alta->nome);
+                    log_printf("   Status: Tratamento concluido\n");
 
                     push(&pilha, paciente_alta);
-                    printf("-> Alta registrada no sistema!\n");
-                    printf("-> Total de altas processadas: %d\n", total_altas);
+                    log_printf("-> Alta registrada no sistema!\n");
+                    log_printf("-> Total de altas processadas: %d\n", total_altas);
 
-                    printf("-> Situacao dos leitos apos alta:\n");
+                    log_printf("-> Situacao dos leitos apos alta:\n");
                     imprimir_lista(&leitos);
 
-                    printf("-> Registro de altas atualizado:\n");
+                    log_printf("-> Registro de altas atualizado:\n");
                     imprimir_pilha(&pilha);
                 }
             }
             else
             {
-                printf("-> Pacientes ainda em tratamento - nenhuma alta hoje :(\n");
+                log_printf("-> Pacientes ainda em tratamento - nenhuma alta hoje :(\n");
             }
         }
         else
         {
-            printf("\n3. LEITOS VAZIOS - Nenhum paciente para receber alta\n");
+            log_printf("\n3. LEITOS VAZIOS - Nenhum paciente para receber alta\n");
         }
 
         // Resumo do ciclo
         time_t tempo_atual = time(NULL);
         int tempo_execucao = (int)(tempo_atual - inicio_sistema);
 
-        printf("\n--- Resumo do Ciclo %d ---\n", ciclos);
-        printf("Fila de espera: %d pacientes\n", fila.tamanho);
-        printf("Leitos ocupados: %d pacientes\n", leitos.tamanho);
-        printf("Altas registradas: %d pacientes\n", pilha.topo + 1);
-        printf("Total de atendimentos: %d\n", total_atendimentos);
-        printf("Total de altas: %d\n", total_altas);
-        printf("Tempo de execucao: %02d:%02d\n", tempo_execucao / 60, tempo_execucao % 60);
+        log_printf("\n--- Resumo do Ciclo %d ---\n", ciclos);
+        log_printf("Fila de espera: %d pacientes\n", fila.tamanho);
+        log_printf("Leitos ocupados: %d pacientes\n", leitos.tamanho);
+        log_printf("Altas registradas: %d pacientes\n", pilha.topo + 1);
+        log_printf("Total de atendimentos: %d\n", total_atendimentos);
+        log_printf("Total de altas: %d\n", total_altas);
+        log_printf("Tempo de execucao: %02d:%02d\n", tempo_execucao / 60, tempo_execucao % 60);
 
         // Condições de parada
         if (esta_vazio(&fila) && esta_vazio_lista(&leitos))
         {
-            printf("\n*** TODOS OS PACIENTES FORAM ATENDIDOS COM SUCESSO! ***\n");
+            log_printf("\n*** TODOS OS PACIENTES FORAM ATENDIDOS COM SUCESSO! ***\n");
             break;
         }
 
-        printf("\nAguardando proximo ciclo...\n");
+        log_printf("\nAguardando proximo ciclo...\n");
         sleep(2);
     }
 
@@ -179,28 +190,35 @@ int main()
     time_t fim_sistema = time(NULL);
     int tempo_total = (int)(fim_sistema - inicio_sistema);
 
-    printf("\n========================================\n");
-    printf("           RELATORIO FINAL\n");
-    printf("========================================\n");
+    log_printf("\n========================================\n");
+    log_printf("           RELATORIO FINAL\n");
+    log_printf("========================================\n");
 
-    printf("\nEstatisticas Operacionais:\n");
-    printf("- Ciclos executados: %d\n", ciclos);
-    printf("- Tempo total de operacao: %02d:%02d\n", tempo_total / 60, tempo_total % 60);
-    printf("- Pacientes atendidos: %d\n", total_atendimentos);
-    printf("- Altas processadas: %d\n", total_altas);
+    log_printf("\nEstatisticas Operacionais:\n");
+    log_printf("- Ciclos executados: %d\n", ciclos);
+    log_printf("- Tempo total de operacao: %02d:%02d\n", tempo_total / 60, tempo_total % 60);
+    log_printf("- Pacientes atendidos: %d\n", total_atendimentos);
+    log_printf("- Altas processadas: %d\n", total_altas);
 
     if (!esta_vazia(&pilha))
     {
-        printf("\n========================================\n");
-        printf("         HISTORICO DE ALTAS\n");
-        printf("========================================\n");
-        printf("Total de registros: %d altas processadas\n\n", pilha.topo + 1);
+        log_printf("\n========================================\n");
+        log_printf("         HISTORICO DE ALTAS\n");
+        log_printf("========================================\n");
+        log_printf("Total de registros: %d altas processadas\n\n", pilha.topo + 1);
         imprimir_pilha(&pilha);
     }
 
-    printf("\n========================================\n");
-    printf("      SISTEMA FINALIZADO COM SUCESSO\n");
-    printf("========================================\n");
+    log_printf("\n========================================\n");
+    log_printf("      SISTEMA FINALIZADO COM SUCESSO\n");
+    log_printf("========================================\n");
+
+    // Timestamp final e fecha o log
+    time_t fim_log = time(NULL);
+    log_printf("\n=== LOG FINALIZADO EM %s", ctime(&fim_log));
+    
+    log_fechar();
+    printf("\nLog detalhado salvo em: processamento.log\n");
 
     return 0;
 }

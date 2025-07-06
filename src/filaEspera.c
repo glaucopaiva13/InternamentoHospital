@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "../include/tabela.h"
 #include "../include/filaEspera.h"
-#include "../include/pilha.h"
+#include "../include/log.h"
 
 void inicia_deque(Deque *d)
 {
@@ -26,7 +26,7 @@ void insere_inicio(Deque *d, No *paciente)
 {
   if (esta_cheio(d))
   {
-    printf("Deque cheio!\n");
+    log_printf("Deque cheio!\n");
     return;
   }
 
@@ -51,7 +51,7 @@ void insere_final(Deque *d, No *paciente)
 {
   if (esta_cheio(d))
   {
-    printf("Deque cheio!\n");
+    log_printf("Deque cheio!\n");
     return;
   }
   if (esta_vazio(d))
@@ -71,7 +71,7 @@ No *remove_inicio(Deque *d)
 {
   if (esta_vazio(d))
   {
-    printf("Deque vazio!\n");
+    log_printf("Deque vazio!\n");
     return NULL;
   }
 
@@ -97,7 +97,7 @@ No *remove_final(Deque *d)
 {
   if (esta_vazio(d))
   {
-    printf("Fila vazia!\n");
+    log_printf("Fila vazia!\n");
     return NULL;
   }
 
@@ -121,7 +121,7 @@ No *pega_inicio(Deque *d)
 {
   if (esta_vazio(d))
   {
-    printf("Fila vazia!\n");
+    log_printf("Fila vazia!\n");
     return NULL;
   }
 
@@ -132,7 +132,7 @@ No *pega_final(Deque *d)
 {
   if (esta_vazio(d))
   {
-    printf("Fila vazia!\n");
+    log_printf("Fila vazia!\n");
     return NULL;
   }
 
@@ -143,16 +143,16 @@ void imprime(Deque *d)
 {
   if (esta_vazio(d))
   {
-    printf("Fila vazia!\n");
+    log_printf("Fila vazia!\n");
     return;
   }
 
-  printf("Fila: ");
+  log_printf("Fila: ");
 
   for (int i = 0; i < d->tamanho; i++)
-    printf("%s ", d->vetor[i]->id);
+    log_printf("%s ", d->vetor[i]->id);
 
-  printf("\n");
+  log_printf("\n");
 }
 
 // Sorteia um paciente da tabela hash e insere no deque conforme prioridade
@@ -179,7 +179,6 @@ No *sortearPaciente(tabela_hash *th, Deque *fila)
   No *paciente = pacientes[sorteado];
   paciente->em_fila = 1;
 
-  printf("Paciente sorteado: %s, Prioridade: %d\n", paciente->id, paciente->prioridade);
   if (paciente->prioridade >= 4)
   {
     insere_inicio(fila, paciente);
@@ -196,7 +195,7 @@ No *dequeParaLista(Deque *fila)
 {
   if (esta_vazio(fila))
   {
-    printf("Fila vazia!\n");
+    log_printf("Fila vazia!\n");
     return NULL;
   }
 
@@ -234,19 +233,19 @@ void preencherFila(tabela_hash *th, Deque *fila)
     No *paciente = sortearPaciente(th, fila);
     if (paciente != NULL)
     {
-      printf("NOVO PACIENTE CHEGOU!\n");
-      printf("ID: %s\n", paciente->id);
-      printf("Nome: %s\n", paciente->nome);
-      printf("Idade: %d\n", paciente->idade);
-      printf("Sexo: %c\n", paciente->sexo);
-      printf("CPF: %s\n", paciente->cpf);
-      printf("Prioridade: %d\n", paciente->prioridade);
-      printf("Atendido: %s\n", paciente->atendido ? "Sim" : "Não");
-      printf("Em Fila: %s\n", paciente->em_fila ? "Sim" : "Não");
+      log_printf("NOVO PACIENTE CHEGOU!\n");
+      log_printf("ID: %s\n", paciente->id);
+      log_printf("Nome: %s\n", paciente->nome);
+      log_printf("Idade: %d\n", paciente->idade);
+      log_printf("Sexo: %c\n", paciente->sexo);
+      log_printf("CPF: %s\n", paciente->cpf);
+      log_printf("Prioridade: %d\n", paciente->prioridade);
+      log_printf("Atendido: %s\n", paciente->atendido ? "Sim" : "Não");
+      log_printf("Em Fila: %s\n", paciente->em_fila ? "Sim" : "Não");
     }
     else
     {
-      printf("Nenhum paciente disponível para adicionar à fila.\n");
+      log_printf("Nenhum paciente disponível para adicionar à fila.\n");
       break;
     }
   }
