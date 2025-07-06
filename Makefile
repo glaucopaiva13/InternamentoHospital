@@ -14,4 +14,4 @@ run: $(TARGET)
 	./$(TARGET)
 
 clean:
-	rm -f $(TARGET)
+	rm -f $(TARGET) processamento.log
