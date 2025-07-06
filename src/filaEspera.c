@@ -5,6 +5,7 @@
 #include "../include/filaEspera.h"
 #include "../include/log.h"
 
+// Função para iniciar o deque 
 void inicia_deque(Deque *d)
 {
   d->inicio = -1;
@@ -12,16 +13,19 @@ void inicia_deque(Deque *d)
   d->tamanho = 0;
 }
 
+// Verifica se o deque está cheio
 int esta_cheio(Deque *d)
 {
   return d->tamanho == MAX;
 }
 
+// Verifica se o deque está vazio
 int esta_vazio(Deque *d)
 {
   return d->tamanho == 0;
 }
 
+// Insere no inicio do deque
 void insere_inicio(Deque *d, No *paciente)
 {
   if (esta_cheio(d))
@@ -36,6 +40,7 @@ void insere_inicio(Deque *d, No *paciente)
   }
   else
   {
+    // Arrasta todos os elementos do vetor para direita
     for (int i = d->final; i >= d->inicio; i--)
     {
       d->vetor[i + 1] = d->vetor[i];
@@ -43,10 +48,12 @@ void insere_inicio(Deque *d, No *paciente)
     d->final++;
   }
 
+  // Incrementa o tamanho
   d->vetor[d->inicio] = paciente;
   d->tamanho++;
 }
 
+// Função para inserir no final do deque
 void insere_final(Deque *d, No *paciente)
 {
   if (esta_cheio(d))
@@ -62,11 +69,12 @@ void insere_final(Deque *d, No *paciente)
   {
     d->final = d->final + 1;
   }
-
+  // Incrementa no final e aumenta o tamanho em mais um
   d->vetor[d->final] = paciente;
   d->tamanho++;
 }
 
+// Função para remover do deque
 No *remove_inicio(Deque *d)
 {
   if (esta_vazio(d))
@@ -76,12 +84,13 @@ No *remove_inicio(Deque *d)
   }
 
   No *paciente = d->vetor[d->inicio];
-
+  // Move todos os elementos para direita
   for (int i = d->inicio; i < d->final; i++)
   {
     d->vetor[i] = d->vetor[i + 1];
   }
 
+  // Diminui do tamanho
   d->final--;
   d->tamanho--;
 
@@ -93,6 +102,7 @@ No *remove_inicio(Deque *d)
   return paciente;
 }
 
+// Função para remover do final
 No *remove_final(Deque *d)
 {
   if (esta_vazio(d))
@@ -117,6 +127,7 @@ No *remove_final(Deque *d)
   return paciente;
 }
 
+// Retorna o elemento do inicio
 No *pega_inicio(Deque *d)
 {
   if (esta_vazio(d))
@@ -128,6 +139,7 @@ No *pega_inicio(Deque *d)
   return d->vetor[d->inicio];
 }
 
+// Retorna o elemento do final
 No *pega_final(Deque *d)
 {
   if (esta_vazio(d))
@@ -139,6 +151,7 @@ No *pega_final(Deque *d)
   return d->vetor[d->final];
 }
 
+// Imprime todos os elementos do deque
 void imprime(Deque *d)
 {
   if (esta_vazio(d))
@@ -226,6 +239,7 @@ No *dequeParaLista(Deque *fila)
   return pacienteSair;
 }
 
+// Função para preencher o deque sorteando os pacientes da tabela hash
 void preencherFila(tabela_hash *th, Deque *fila)
 {
   while (!esta_cheio(fila))

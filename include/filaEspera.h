@@ -7,6 +7,7 @@
 
 #define MAX 20
 
+// Deque estruturado com um vetor de ponteiros
 typedef struct{
   No* vetor[MAX];
   int inicio;
@@ -14,6 +15,7 @@ typedef struct{
   int tamanho;
 } Deque;
 
+// Declarações das funções
 void inicia_deque(Deque *d);
 int esta_cheio(Deque *d);
 int esta_vazio(Deque *d);

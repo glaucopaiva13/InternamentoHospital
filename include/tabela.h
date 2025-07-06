@@ -3,6 +3,7 @@
 
 #define TAMANHO 50
 
+// Estrutura de dados dos nós
 typedef struct No{
     char id[50];
     char nome[50];
@@ -15,10 +16,12 @@ typedef struct No{
     struct No *proximo;
 } No;
 
+// Estrutura da tabela hash, contendo um array de ponteiros 
 typedef struct tabela_hash{
     No *tabela[TAMANHO];
 }tabela_hash;
 
+// Declarações das funções
 void inicializar_tabela(tabela_hash *tabela);
 int eh_digito(char c);
 int funcao_hash(char *chave);

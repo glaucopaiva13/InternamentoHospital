@@ -7,12 +7,13 @@
 #include "tabela.h"
 #include "filaEspera.h"
 
+// Estrutura de dados de lista encadeada
 typedef struct{
     No* inicio; 
     int tamanho;
 } Lista;
 
-
+// Declaração das funções
 void inicializar_lista(Lista *l);
 int esta_cheio_lista(Lista *l);
 int esta_vazio_lista(Lista *l);
