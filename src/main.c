@@ -101,23 +101,29 @@ int main()
         {
             log_printf("\n2. ATENDIMENTO MEDICO (Fila -> Leitos):\n");
 
-            No *paciente = dequeParaLista(&fila);
-            if (paciente != NULL)
-            {
-                total_atendimentos++;
-                pacientes_processados++;
+            // Verifica se há espaço nos leitos antes de tentar inserir
+            if (esta_cheio_lista(&leitos)) {
+                log_printf("-> LEITOS LOTADOS - Capacidade maxima de 10 leitos atingida!\n");
+                log_printf("-> Aguardando alta de pacientes para liberar leitos...\n");
+            } else {
+                No *paciente = dequeParaLista(&fila);
+                if (paciente != NULL)
+                {
+                    total_atendimentos++;
+                    pacientes_processados++;
 
-                log_printf("-> Paciente chamado para atendimento:\n");
-                log_printf("   ID: %s", paciente->id);
-                log_printf("   Nome: %s", paciente->nome);
-                log_printf("   Prioridade: %d\n", paciente->prioridade);
+                    log_printf("-> Paciente chamado para atendimento:\n");
+                    log_printf("   ID: %s\n", paciente->id);
+                    log_printf("   Nome: %s\n", paciente->nome);
+                    log_printf("   Prioridade: %d\n", paciente->prioridade);
 
-                insereNaLista(&leitos, paciente);
-                log_printf("-> Paciente internado com sucesso!\n");
-                log_printf("-> Total de atendimentos realizados: %d\n", total_atendimentos);
+                    insereNaLista(&leitos, paciente);
+                    log_printf("-> Paciente internado com sucesso!\n");
+                    log_printf("-> Total de atendimentos realizados: %d\n", total_atendimentos);
 
-                log_printf("-> Situacao atual dos leitos:\n");
-                imprimir_lista(&leitos);
+                    log_printf("-> Situacao atual dos leitos:\n");
+                    imprimir_lista(&leitos);
+                }
             }
         }
         else

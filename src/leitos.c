@@ -12,7 +12,7 @@ void inicializar_lista(Lista *l){
 // Verifica se a lista está cheia
 int esta_cheio_lista(Lista *l)
 {
-  return l->tamanho == 20;
+  return l->tamanho == 10;
 }
 
 // Verifica se está vazia
